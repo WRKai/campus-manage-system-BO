@@ -23,7 +23,8 @@
     const valid = await deptAddFormRef.value?.validate()
     if (!valid)
       return
-    await deptMajorStore.addDept(deptAddFormVal.value.name + '系')
+    await deptMajorStore.addDept(deptAddFormVal.value.name
+      + deptAddFormVal.value.name.endsWith('系') ? '' : '系')
     deptAddFormRef.value?.resetFields()
     deptAddVis.value = false
     ElMessage.success('添加成功!')
@@ -56,11 +57,6 @@
   function handleMajorAdd() {
     majorAddVis.value = true
   }
-  // TEST
-  // setInterval(() => {
-  //   console.log(deptMajorStore.depts)
-  //   console.log(deptMajorStore.majors)
-  // }, 5555)
 </script>
 
 <template>
@@ -77,7 +73,7 @@
     <ElForm ref="deptAddFormRef" :rules="deptAddFormRules" :model="deptAddFormVal" @submit.prevent="deptAdd">
       <ElFormItem prop="name" label="系名">
         <ElInput ref="deptAddInp" size="large" v-model.trim="deptAddFormVal.name">
-          <template #append>系</template>
+          <template #append>{{ deptAddFormVal.name.endsWith('系') ? ' ' : '系' }}</template>
         </ElInput>
       </ElFormItem>
       <ElFormItem>
@@ -109,12 +105,16 @@
     header {
       display: block;
       padding: 20px;
+      box-sizing: border-box;
+      height: 75px;
       width: 100%;
       border-bottom: 1px solid #dcdfe6;
     }
 
     .table {
       padding: 20px;
+      height: calc(100% - 75px);
+      overflow-y: scroll;
     }
   }
 </style>

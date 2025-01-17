@@ -32,6 +32,12 @@
         </ElIcon>
         <span>教师管理</span>
       </ElMenuItem>
+      <ElMenuItem index="/main/course">
+        <ElIcon :size="20">
+          <SvgIcon name="course" />
+        </ElIcon>
+        <span>课程管理</span>
+      </ElMenuItem>
     </ElMenu>
     <RouterView />
   </div>
@@ -42,6 +48,7 @@
     display: flex;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 
     .menu {
       width: fit-content;
