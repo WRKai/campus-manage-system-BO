@@ -1,7 +1,8 @@
 import { useUserStore } from "@/stores/userStore"
 // import { logout } from "@/util"
 import axios, { type AxiosInstance } from "axios"
-import { ElLoading, ElMessage } from "element-plus"
+import { ElLoading, ElMessage, ElMessageBox } from "element-plus"
+import router from "@/router/"
 
 export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 export enum ContentType {
@@ -24,19 +25,12 @@ export const AUTH = 'Authorization'
 
 let loading: ReturnType<typeof ElLoading.service> | null = null
 
-let userStore: ReturnType<typeof useUserStore> | null = null
-function getStore() {
-  if (userStore)
-    return userStore
-  return userStore = useUserStore()
-}
-
 let ins: AxiosInstance | null = null
 function getIns() {
   if (ins)
     return ins
   ins = axios.create({
-    baseURL: import.meta.env.PROD ? `/api` : `/api`,
+    baseURL: import.meta.env.PROD ? `/api-admin` : `/api-admin`,
     timeout: 10000,
   })
   //
@@ -74,13 +68,23 @@ function getIns() {
       if (data.code === 200)
         return data.data
       if ((resp.config as any).showError) {
-        ElMessage.error(data.message)
+        ElMessage.error(data.errorMessage)
       }
       return Promise.reject(data)
     }, err => {
       if (loading) {
         loading.close()
         loading = null
+      }
+      if (err.status === 401) {
+        useUserStore().clearToken()
+        useUserStore().clearUser()
+        ElMessageBox.alert('登录过期，请重新登录', '提示', {
+          confirmButtonText: '去登陆',
+          type: 'warning',
+          showClose: false
+        }).then(() => { router.push({ name: 'login' }) })
+        return Promise.reject(err)
       }
       ElMessage.error('请求失败')
       return Promise.reject(err)
@@ -103,7 +107,8 @@ export async function req(configOrUrl: string | RequestOptions, method: Method =
   else
     config = { ...config, ...configOrUrl }
   // 处理content-type
-  config.contentType = config.contentType ?? ContentType.JSON
+  if (config.method !== 'GET')
+    config.contentType = config.contentType ?? ContentType.JSON
   if (config.contentType === ContentType.FORM) {
     const formData = new FormData()
     for (const key in config.data) {
@@ -124,7 +129,7 @@ export async function req(configOrUrl: string | RequestOptions, method: Method =
     'X-Requested-With': 'XMLHttpRequest'
   }
   if (!config.noAuth)
-    headers[AUTH] = getStore().getToken()
+    headers[AUTH] = useUserStore().getToken()
   const resConfig = { ...config, headers }
   return getIns()(resConfig)
 }

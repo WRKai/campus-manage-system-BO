@@ -3,12 +3,6 @@ import Login from '../views/Login.vue'
 import Main from '../views/Main/Main.vue'
 import { useUserStore } from '@/stores/userStore'
 
-let userStore: ReturnType<typeof useUserStore> | null = null
-function getStore() {
-  if (userStore)
-    return userStore
-  return userStore = useUserStore()
-}
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -29,6 +23,24 @@ const router = createRouter({
       path: '/main',
       name: 'main',
       component: Main,
+      redirect: '/main/majorDept',
+      children: [
+        {
+          path: '/main/majorDept',
+          name: 'main-majorDept',
+          component: () => import('../views/Main/MajorDept.vue')
+        },
+        {
+          path: '/main/student',
+          name: 'main-student',
+          component: () => import('../views/Main/Student.vue')
+        },
+        {
+          path: '/main/teacher',
+          name: 'main-teacher',
+          component: () => import('../views/Main/Teacher.vue')
+        },
+      ]
     }
     // {
     //   path: '/about',
@@ -42,13 +54,13 @@ const router = createRouter({
 })
 router.beforeEach((to, _from, next) => {
   if (to.meta.noAuth) {
-    if (getStore().getToken()) {
+    if (useUserStore().getToken()) {
       next('/main')
     } else {
       next()
     }
   } else {
-    if (getStore().getToken()) {
+    if (useUserStore().getToken()) {
       next()
     } else {
       next('/login')

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-interface User {
+export interface User {
   id: number; // 教师号，类型为 long，对应 TypeScript 的 number
   sex?: string; // 性别，类型为 varchar(3)，对应 TypeScript 的 string，且为可选字段
   dept: number; // 系别，类型为 long，对应 TypeScript 的 number
@@ -10,8 +10,8 @@ interface User {
   title?: string; // 职称，类型为 varchar(255)，对应 TypeScript 的 string，且为可选字段
   password: string | null; // 密码，类型为 varchar(255)，对应 TypeScript 的 string
 }
-const USER_INFO_KEY = 'USER_INFO_KEY'
-const TOKEN_KEY = 'TOKEN_KEY'
+const USER_INFO_KEY = '__ADMIN_USER_INFO_KEY'
+const TOKEN_KEY = '__ADMIN_TOKEN_KEY'
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<User>();
@@ -23,7 +23,7 @@ export const useUserStore = defineStore('user', () => {
 
   function clearUser() {
     user.value = void 0;
-    localStorage.setItem(USER_INFO_KEY, '');
+    localStorage.removeItem(USER_INFO_KEY);
   }
 
   function getUser() {
@@ -45,7 +45,7 @@ export const useUserStore = defineStore('user', () => {
 
   function clearToken() {
     token.value = '';
-    localStorage.setItem(TOKEN_KEY, '');
+    localStorage.removeItem(TOKEN_KEY);
   }
 
   function getToken() {

@@ -42,13 +42,6 @@
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
-}
-
-body {
-  min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
-  line-height: 1.6;
   font-family:
     Inter,
     -apple-system,
@@ -62,8 +55,21 @@ body {
     'Droid Sans',
     'Helvetica Neue',
     sans-serif;
-  font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-background);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
 }
