@@ -22,6 +22,15 @@ export default defineConfig({
     viteCompress({
       algorithm: 'gzip',
       ext: '.gz',
+      filter: /\.(js|css|html|ico|json)$/,
+      threshold: 1,
+      deleteOriginFile: false,
+    }),
+    viteCompress({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      filter: /\.(js|css|html|ico|json)$/,
+      threshold: 1,
       deleteOriginFile: false,
     })
   ],

@@ -26,6 +26,9 @@ export type StringifyVals<T, Keys extends keyof T = keyof T> = {
   [K in keyof T]: K extends Keys ? string : T[K];
 }
 
+export type PagePromise<T> = Promise<{ records: T[], total: number }>
+
+
 type ElMessageBoxType = 'success' | 'warning' | 'info' | 'error'
 type ElMessageBoxOptions = {
   type?: ElMessageBoxType,

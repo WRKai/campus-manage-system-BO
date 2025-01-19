@@ -118,7 +118,6 @@
       credit: +filter.value.credit || null,
       sex: filter.value.sex || null
     }
-    console.log(queryObj)
     const res = await pageStudents(queryObj)
     const depts = await deptMajorStore.getDepts()
     const majors = await deptMajorStore.getMajors()

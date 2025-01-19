@@ -7,8 +7,9 @@ export interface User {
   dept: number; // 系别，类型为 long，对应 TypeScript 的 number
   admin: number; // 是否管理员，类型为 tinyint，对应 TypeScript 的 number，默认值为 0
   entry_date?: string; // 入职日期，类型为 date，对应 TypeScript 的 string（或 Date 类型），且为可选字段
-  title?: string; // 职称，类型为 varchar(255)，对应 TypeScript 的 string，且为可选字段
+  title: string | null; // 职称，类型为 varchar(255)，对应 TypeScript 的 string，且为可选字段
   password: string | null; // 密码，类型为 varchar(255)，对应 TypeScript 的 string
+  name: string; // 姓名，类型为 varchar(255)，对应 TypeScript 的 string
 }
 const USER_INFO_KEY = '__ADMIN_USER_INFO_KEY'
 const TOKEN_KEY = '__ADMIN_TOKEN_KEY'

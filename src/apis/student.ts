@@ -1,3 +1,4 @@
+import type { PagePromise } from "@/utils";
 import { req } from "./req";
 
 export interface Student {
@@ -21,7 +22,9 @@ interface StudentQueryParams {
   major?: number | null; // 专业，可为 null
   grade?: number | null; // 年级，可为 null
   id?: number | null; // 学号，可为 null
+  name?: string | null; // 姓名，可为 null
+  sex?: string | null; // 性别，可为 null
 }
 
-export const pageStudents = (params: StudentQueryParams = {}): Promise<{ records: Student[], total: number }> =>
+export const pageStudents = (params: StudentQueryParams = {}): PagePromise<Student> =>
   req({ url: `/user/student`, params })

@@ -2,7 +2,7 @@ import type { Dept } from "@/stores/deptMajorStore";
 import { req } from "./req";
 
 export const getDeptMajorList = (): Promise<Dept[]> =>
-  req({ url: '/dept/deptMajor', method: 'GET', showLoading: false })
+  req({ url: '/dept/deptMajor', method: 'GET' })
 
 export const postAddDept = (data: { name: string }): Promise<number> =>
   req({ url: '/dept/add', method: 'POST', data })
