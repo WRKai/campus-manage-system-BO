@@ -1,3 +1,15 @@
+const _ResizeObserver = window.ResizeObserver
+window.ResizeObserver = class extends _ResizeObserver {
+  // @ts-ignore
+  constructor(cb) {
+    super(entries => {
+      // 使用requestAnimationFrame来延迟执行回调函数
+      requestAnimationFrame(() => {
+        cb(entries);
+      });
+    });
+  }
+}
 import './assets/base.css'
 
 import { createApp } from 'vue'
@@ -13,6 +25,7 @@ import 'virtual:svg-icons-register'
 
 // mock数据
 import '@/mock/'
+import '@/ws/mock'
 
 if (import.meta.env.PROD) {
   console.log = console.error = console.warn = () => { }

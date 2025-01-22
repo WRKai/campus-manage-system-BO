@@ -62,6 +62,7 @@
   const drawer = ref(false);
   const studentAddFormRef = ref<FormInstance>();
   async function handleAddStu() {
+    // TODO 给系别/专业选择加一个刷新按钮
     const valid = await studentAddFormRef.value?.validate()
     if (!valid)
       return
@@ -83,7 +84,7 @@
   const students = ref<StringifyVals<Student, 'dept' | 'major'>[]>([])
   interface StudentFilter {
     page: number;       // 当前页码
-    pageSize: number;       // 当前页码
+    pageSize: number;   // 当前页码
     total: number;      // 总条数
     id: string;         // 学号
     name: string;       // 姓名
@@ -188,8 +189,8 @@
         <ElButton size="large" type="primary" circle :icon="Plus" @click="drawer = true"></ElButton>
       </ElTooltip>
     </header>
-    <div ref="tableContainer" class="table">
-      <ElTable class="data-table" :data="students" stripe style="width: 99%;flex: 1;">
+    <div class="table">
+      <ElTable class="data-table" :data="students" stripe>
         <ElTableColumn fixed prop="id" label="学号" />
         <ElTableColumn prop="name" label="姓名" />
         <ElTableColumn prop="sex" label="性别" />
@@ -277,6 +278,7 @@
 
       .data-table {
         flex: 1;
+        width: 100%;
       }
 
       .pager {

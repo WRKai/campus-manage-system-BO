@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ElButton, ElDrawer, ElTree, ElForm, ElInput, ElFormItem, type FormInstance, ElMessage, ElSelect, ElOption, type InputInstance } from 'element-plus';
-  import { Plus } from '@element-plus/icons-vue';
+  import { Plus, Refresh } from '@element-plus/icons-vue';
   import { ref } from 'vue';
   import { useDeptMajorStore, type Dept } from '@/stores/deptMajorStore';
   const deptMajorStore = useDeptMajorStore();
@@ -62,6 +62,7 @@
 <template>
   <div class="major-dept-container">
     <header>
+      <ElButton @click="deptMajorStore.fetchDepts" :icon="Refresh" circle />
       <ElButton :icon="Plus" @click="handleDeptAdd">添加系别</ElButton>
       <ElButton type="primary" :icon="Plus" @click="handleMajorAdd">添加专业</ElButton>
     </header>

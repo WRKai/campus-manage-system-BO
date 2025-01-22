@@ -56,6 +56,7 @@
   const drawer = ref(false);
   const teacherAddFormRef = ref<FormInstance>();
   async function handleAddTeacher() {
+    // TODO 给系别/专业选择加一个刷新按钮
     const vaild = await teacherAddFormRef.value?.validate()
     if (!vaild)
       return
@@ -67,7 +68,6 @@
       admin: teacherAddFormVal.value.admin ?? 0,
       entryDate: teacherAddFormVal.value.entryDate?.toISOString().substring(0, 10) ?? null
     }
-    console.log(res)
     await postAddTeacher(res)
     drawer.value = false
     ElMessage.success('添加成功!')
@@ -123,7 +123,6 @@
       title: filter.value.title || null,
       entryDate: filter.value.entryDate?.toISOString().substring(0, 10) ?? null
     }
-    console.log(queryObj)
     const res = await pageTeachers(queryObj)
     const depts = await deptMajorStore.getDepts()
     teachers.value = res.records.map(t => ({
@@ -147,18 +146,12 @@
     globalLoading.value = false
     return true
   }
-  // function TEST(fn: () => boolean | Promise<boolean>) {
-
-  // }
-  // TEST(async ()=> false)
   // 其它处理
   function disabledDate(d: Date) {
     return d.getTime() > Date.now()
   }
   const _fn1 = createNumInpFn(teacherAddFormVal.value, 'id');
   const _fn2 = createNumInpFn(filter.value, 'id');
-  // TODOLIST: 换一个nginx、压缩算法；
-  // HTTP2主动推送
 </script>
 
 <template>

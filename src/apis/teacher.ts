@@ -1,7 +1,7 @@
 import type { User } from "@/stores/userStore";
 import { req } from "./req";
 import type { PagePromise } from "@/utils";
-
+import { useTeacherCacheStore } from "@/stores/teacherCacheStore";
 export type Teacher = Omit<User, 'password'>
 
 export const postAddTeacher = (data: Teacher): Promise<void> =>
@@ -21,6 +21,14 @@ interface TeacherQueryParams {
   title?: string | null; // 职称，可为 null
 }
 
-export const pageTeachers = (params: TeacherQueryParams): PagePromise<Teacher> =>
-  req({ url: '/teacher/page', method: 'GET', params })
+export const pageTeachers = async (params: TeacherQueryParams): PagePromise<Teacher> => {
+  const res = await req({ url: '/teacher/page', method: 'GET', params }) as { records: Teacher[], total: number }
+  const cache = useTeacherCacheStore()
+  res.records.forEach(t => {
+    if (!cache.has(t.id))
+      cache.set(t.id, t.name)
+  })
+  return res
+
+}
 

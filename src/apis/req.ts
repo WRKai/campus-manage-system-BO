@@ -40,7 +40,7 @@ function getIns() {
         loading = ElLoading.service({
           lock: true,
           text: '加载中',
-          background: 'rgba(0, 0, 0, 0.5)',
+          background: 'rgba(0, 0, 0, .3)',
         })
       }
       return config

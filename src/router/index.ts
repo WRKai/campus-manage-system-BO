@@ -3,16 +3,24 @@ import Login from '../views/Login.vue'
 import Main from '../views/Main/Main.vue'
 import { useUserStore } from '@/stores/userStore'
 
+export const PATH_LOGIN = '/login'
+export const PATH_MAIN = '/main'
+export const PATH_MAIN_MAJORDEPT = '/main/majorDept'
+export const PATH_MAIN_STUDENT = '/main/student'
+export const PATH_MAIN_TEACHER = '/main/teacher'
+export const PATH_MAIN_COURSE = '/main/course'
+export const PATH_MAIN_LESSON = '/main/lesson'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       name: 'ROOT',
-      redirect: '/login'
+      redirect: PATH_LOGIN
     },
     {
-      path: '/login',
+      path: PATH_LOGIN,
       name: 'login',
       component: Login,
       meta: {
@@ -20,30 +28,35 @@ const router = createRouter({
       }
     },
     {
-      path: '/main',
+      path: PATH_MAIN,
       name: 'main',
       component: Main,
-      redirect: '/main/majorDept',
+      redirect: PATH_MAIN_MAJORDEPT,
       children: [
         {
-          path: '/main/majorDept',
+          path: PATH_MAIN_MAJORDEPT,
           name: 'main-majorDept',
           component: () => import('../views/Main/MajorDept.vue')
         },
         {
-          path: '/main/student',
+          path: PATH_MAIN_STUDENT,
           name: 'main-student',
           component: () => import('../views/Main/Student.vue')
         },
         {
-          path: '/main/teacher',
+          path: PATH_MAIN_TEACHER,
           name: 'main-teacher',
           component: () => import('../views/Main/Teacher.vue')
         },
         {
-          path: '/main/course',
+          path: PATH_MAIN_COURSE,
           name: 'main-course',
           component: () => import('../views/Main/Course.vue')
+        },
+        {
+          path: PATH_MAIN_LESSON,
+          name: 'main-lesson',
+          component: () => import('../views/Main/Lesson.vue')
         },
       ]
     }
