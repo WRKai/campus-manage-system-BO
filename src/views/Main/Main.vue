@@ -91,7 +91,7 @@
         <span :class="{ dot: courseAddDot }">课程申请管理</span>
       </ElMenuItem>
       <ElMenuItem index="/main/lesson">
-        <ElIcon :size="20">
+        <ElIcon :size="22">
           <SvgIcon name="lessonAdd" />
         </ElIcon>
         <span :class="{ dot: lessonAddDot }">课次申请管理</span>

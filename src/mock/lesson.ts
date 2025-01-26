@@ -18,3 +18,31 @@ mock('/api-admin/lesson/check', 'get', {
     },
   ]
 })
+
+mock(/^\/api-admin\/lessonTime/, 'get', {
+  "host": null,
+  "code": 200,
+  "errorMessage": "操作成功",
+  "data": {
+    "ban": [
+      {
+        "beginTime": "14:00:00",
+        "endTime": "15:40:00",
+        "dayOfWeek": 1
+      }
+    ],
+    "notRequired": [
+      {
+        "beginTime": "08:30:00",
+        "endTime": "10:10:00",
+        "dayOfWeek": 1
+      }
+    ]
+  }
+})
+
+mock('/api-admin/lesson/add', 'post', {
+  "errorMessage": "",
+  "code": 200,
+  "data": 1
+})

@@ -33,3 +33,9 @@ mock('/api-admin/course/check', 'get', {
     },
   ]
 })
+
+mock(/^\/api-admin\/course\/apply/, 'put', {
+  "errorMessage": "",
+  "code": 200,
+  data: null
+})

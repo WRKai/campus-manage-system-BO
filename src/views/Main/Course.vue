@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { getCourseApply } from '@/apis/course';
+  import { getCourseApply, putHandleCourseApply } from '@/apis/course';
   import { useCourseStore, type CourseMap } from '@/stores/courseStore';
   import { useDeptMajorStore } from '@/stores/deptMajorStore';
   import { Refresh } from '@element-plus/icons-vue';
-  import { ElButton, ElLink, ElTable, ElTableColumn } from 'element-plus';
+  import { ElButton, ElLink, ElMessage, ElTable, ElTableColumn } from 'element-plus';
   import { ref, watch } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   const deptMajorStore = useDeptMajorStore()
@@ -20,6 +20,7 @@
   init()
   // 获取申请
   interface ApplyVO {
+    uid: string
     name: string
     credit: number
     preCourses: string
@@ -36,22 +37,34 @@
     }))
   }
 
+  async function handleApply(uid: string, apply: number) {
+    console.log(uid, apply)
+    await putHandleCourseApply({ uid, apply })
+    ElMessage.success('操作成功!')
+    refreshApplies()
+  }
+
+  function refreshApplies() {
+    router.push({ query: { t: Date.now() } })
+  }
+
   watch(() => route.query, () => getApplies())
 </script>
 
 <template>
   <div class="course-container">
     <header>
-      <ElButton @click="router.push({ query: { t: Date.now() } })" :icon="Refresh" circle />
+      <ElButton @click="refreshApplies" :icon="Refresh" circle />
     </header>
-    <ElTable :data stripe class="table">
+    <ElTable show-overflow-tooltip :data stripe class="table">
       <ElTableColumn fixed label="课程名称" prop="name" />
       <ElTableColumn label="学分" prop="credit" width="80" />
       <ElTableColumn label="先修课程" prop="preCourses" />
       <ElTableColumn label="面向专业" prop="majors" />
-      <ElTableColumn fixed="right" label="操作" width="80">
+      <ElTableColumn fixed="right" label="操作" width="100">
         <template #default="scope">
-          <ElLink type="primary">查看</ElLink>
+          <ElLink type="success" style="margin-right: 10px;" @click="handleApply(scope.row.uid, 1)">通过</ElLink>
+          <ElLink type="danger" @click="handleApply(scope.row.uid, 0)">驳回</ElLink>
         </template>
       </ElTableColumn>
     </ElTable>

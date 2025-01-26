@@ -11,5 +11,5 @@ mockSever.on('connection', socket => {
       "code": +codeNum + 1,
       "data": null
     }))
-  }, 55555)
+  }, 9999)
 })

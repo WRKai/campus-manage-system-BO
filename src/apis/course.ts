@@ -29,3 +29,12 @@ interface CourseApply {
 
 export const getCourseApply = (): Promise<CourseApply[]> =>
   req('/course/check')
+
+
+interface HandleCourseApplyReq {
+  uid: string
+  apply: number
+}
+
+export const putHandleCourseApply = (data: HandleCourseApplyReq): Promise<void> =>
+  req({ url: '/course/apply', method: 'PUT', data })

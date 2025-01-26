@@ -3,6 +3,7 @@ import { useUserStore } from "@/stores/userStore"
 import axios, { type AxiosInstance } from "axios"
 import { ElLoading, ElMessage, ElMessageBox } from "element-plus"
 import router from "@/router/"
+import qs from 'qs'
 
 export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 export enum ContentType {
@@ -32,6 +33,8 @@ function getIns() {
   ins = axios.create({
     baseURL: import.meta.env.PROD ? `/api-admin` : `/api-admin`,
     timeout: 10000,
+    paramsSerializer: params =>
+      qs.stringify(params, { arrayFormat: 'repeat' })
   })
   //
   ins.interceptors.request.use(

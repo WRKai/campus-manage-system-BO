@@ -46,3 +46,6 @@ export async function showConfirm(message: string, typeOrConfig?: ElMessageBoxOp
   }
   return ElMessageBox.confirm(message, title, config)
 }
+
+
+export const DAY_OF_WEEK_MAP = ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日']

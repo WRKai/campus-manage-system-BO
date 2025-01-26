@@ -2,10 +2,11 @@
   import { pageTeachers, postAddTeacher, putAdminTeacher, type Teacher } from '@/apis/teacher';
   import { useDeptMajorStore, type Dept } from '@/stores/deptMajorStore';
   import { useUserStore } from '@/stores/userStore';
-  import { createNumInpFn, type StringifyVals } from '@/utils';
-  import { Plus, Search, Delete } from '@element-plus/icons-vue';
-  import { ElButton, ElDrawer, ElForm, ElFormItem, ElInput, ElMessage, ElPagination, ElRadio, ElSelect, ElRadioGroup, ElTable, ElTableColumn, type FormInstance, type FormRules, ElOption, ElTooltip, ElSwitch, ElDatePicker } from 'element-plus';
+  import { createNumInpFn } from '@/utils';
+  import { Search, Delete } from '@element-plus/icons-vue';
+  import { ElButton, ElDrawer, ElForm, ElFormItem, ElInput, ElMessage, ElPagination, ElRadio, ElSelect, ElRadioGroup, ElTable, ElTableColumn, type FormInstance, type FormRules, ElOption, ElTooltip, ElSwitch, ElDatePicker, ElIcon } from 'element-plus';
   import { ref, watch } from 'vue';
+  import SvgIcon from '@/components/SvgIcon.vue';
   const deptMajorStore = useDeptMajorStore()
   const userStore = useUserStore()
   // 添加学生
@@ -202,7 +203,13 @@
         </ElFormItem>
       </ElForm>
       <ElTooltip placement="left" content="添加教师">
-        <ElButton size="large" type="primary" circle :icon="Plus" @click="drawer = true"></ElButton>
+        <ElButton size="large" type="primary" circle @click="drawer = true">
+          <template #icon>
+            <ElIcon :size="30">
+              <SvgIcon name="teacherAdd" />
+            </ElIcon>
+          </template>
+        </ElButton>
       </ElTooltip>
     </header>
     <div ref="tableContainer" class="table">

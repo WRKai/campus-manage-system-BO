@@ -27,6 +27,10 @@
   }
 
   function dealOrder(num: string) {
+    num = num.replaceAll(/[^\d]/g, '')
+    const val = +num
+    if (val < 1 || val > 2)
+      return
     order.value = num
     dealModelValue()
   }
@@ -38,7 +42,7 @@
   <div class="term-select-container">
     <ElInput class="inp" :model-value="from" @update:model-value="dealFrom" />
     <div class="text">-</div>
-    <ElTooltip content="请修改前一个输入框">
+    <ElTooltip popper-class="above-dialog-tooltip" content="请修改前一个输入框">
       <ElInput class="inp banned" readonly v-model="to" />
     </ElTooltip>
     <div class="text">学年第</div>

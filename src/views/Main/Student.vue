@@ -3,8 +3,9 @@
   import { useDeptMajorStore, type Dept } from '@/stores/deptMajorStore';
   import { createNumInpFn, type StringifyVals } from '@/utils';
   import { Plus, Search, Delete } from '@element-plus/icons-vue';
-  import { ElButton, ElCascader, ElDrawer, ElForm, ElFormItem, ElInput, ElMessage, ElPagination, ElRadio, ElSelect, ElRadioGroup, ElTable, ElTableColumn, type FormInstance, type FormRules, ElOption, ElTooltip } from 'element-plus';
+  import { ElButton, ElCascader, ElDrawer, ElForm, ElFormItem, ElInput, ElMessage, ElPagination, ElRadio, ElSelect, ElRadioGroup, ElTable, ElTableColumn, type FormInstance, type FormRules, ElOption, ElTooltip, ElIcon } from 'element-plus';
   import { ref, watch } from 'vue';
+  import SvgIcon from '@/components/SvgIcon.vue';
   const deptMajorStore = useDeptMajorStore()
   // 添加学生
   const deptMajorList = ref<Dept[]>([])
@@ -50,7 +51,7 @@
     deptMajor: [
       { required: true, message: '请选择系别/专业', trigger: ['blur', 'change'] },
       {
-        validator: (_r, val: number[], cb) => {
+        validator: (_, val: number[], cb) => {
           if (val && val.length === 2 && val.every(v => v))
             cb()
           else
@@ -177,7 +178,7 @@
           </ElInput>
         </ElFormItem>
         <ElFormItem>
-          <ElTooltip content="据条件筛选学生">
+          <ElTooltip content="据条件筛选">
             <ElButton size="small" native-type="submit" circle :icon="Search" />
           </ElTooltip>
           <ElTooltip content="清空筛选条件">
@@ -186,7 +187,13 @@
         </ElFormItem>
       </ElForm>
       <ElTooltip placement="left" content="添加学生">
-        <ElButton size="large" type="primary" circle :icon="Plus" @click="drawer = true"></ElButton>
+        <ElButton size="large" type="primary" circle @click="drawer = true">
+          <template #icon>
+            <ElIcon :size="18">
+              <SvgIcon name="studentAdd" />
+            </ElIcon>
+          </template>
+        </ElButton>
       </ElTooltip>
     </header>
     <div class="table">
