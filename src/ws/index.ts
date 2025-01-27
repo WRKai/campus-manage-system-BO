@@ -1,13 +1,14 @@
 import ReconnectingWebSocket from "reconnecting-websocket"
-import { WS_URL } from "./consts"
+import { WS_BASE_URL } from "./consts"
 import eventEmitter from "@/utils/EventEmitter"
+import { useUserStore } from "@/stores/userStore"
 
 let ws: ReconnectingWebSocket | null = null
 
 export function createWs() {
   if (ws)
     return
-  ws = new ReconnectingWebSocket(WS_URL, [], { maxRetries: 5 })
+  ws = new ReconnectingWebSocket(WS_BASE_URL + useUserStore().getToken(), [], { maxRetries: 5 })
   ws.onopen = () => {
     console.log("ws open!")
   }
@@ -28,8 +29,8 @@ export function createWs() {
   ws.onclose = () => {
     console.log("ws close!")
   }
-  ws.onerror = err => {
-    console.error("ws error:", err)
+  ws.onerror = e => {
+    console.error(e.error)
   }
 }
 

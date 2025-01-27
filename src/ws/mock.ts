@@ -1,6 +1,7 @@
 import { Server } from 'mock-socket'
-import { WS_URL } from './consts';
-const mockSever = new Server(WS_URL)
+import { WS_BASE_URL } from './consts';
+import { useUserStore } from '@/stores/userStore';
+const mockSever = new Server(WS_BASE_URL + useUserStore().getToken())
 mockSever.on('connection', socket => {
   console.log('mockSever connected!');
   let codeNum = false

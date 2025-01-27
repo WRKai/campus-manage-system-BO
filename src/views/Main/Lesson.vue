@@ -602,6 +602,21 @@
             margin-bottom: 0;
           }
         }
+
+        // TODO 待添加角标
+        // &::after {
+        //   content: '添加时间段';
+        //   right: -12%;
+        //   top: -14%;
+        //   height: fit-content;
+        //   width: fit-content;
+        //   padding: 2px;
+        //   font-size: 10px;
+        //   color: #fff;
+        //   border-radius: 5px;
+        //   background-color: #67C23A;
+        //   position: absolute;
+        // }
       }
 
       .time-unit-add {
@@ -726,7 +741,7 @@
               }
             }
 
-            animation: blink 1.5s infinite ease-in-out;
+            animation: blink 1.2s infinite ease-in-out;
           }
 
           &.choosed {

@@ -44,7 +44,8 @@
     refreshApplies()
   }
 
-  function refreshApplies() {
+  async function refreshApplies() {
+    courseMap = await courseStore.getCourseMap()
     router.push({ query: { t: Date.now() } })
   }
 

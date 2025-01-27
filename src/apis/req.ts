@@ -4,25 +4,10 @@ import axios, { type AxiosInstance } from "axios"
 import { ElLoading, ElMessage, ElMessageBox } from "element-plus"
 import router from "@/router/"
 import qs from 'qs'
+import { closeWs } from "@/ws"
+import { AUTH, ContentType, type Method, type RequestOptions } from "."
 
-export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
-export enum ContentType {
-  FORM = 'multipart/form-data',
-  JSON = 'application/json',
-  URL = 'application/x-www-form-urlencoded',
-  BIN = 'application/octet-stream'
-}
-export interface RequestOptions {
-  url: string
-  method?: Method
-  params?: any
-  contentType?: ContentType
-  data?: any
-  noAuth?: any
-  showLoading?: boolean
-  showError?: boolean
-}
-export const AUTH = 'Authorization'
+
 
 let loading: ReturnType<typeof ElLoading.service> | null = null
 
@@ -34,7 +19,15 @@ function getIns() {
     baseURL: import.meta.env.PROD ? `/api-admin` : `/api-admin`,
     timeout: 10000,
     paramsSerializer: params =>
-      qs.stringify(params, { arrayFormat: 'repeat' })
+      qs.stringify(params, {
+        arrayFormat: 'repeat',
+        skipNulls: true,
+        // filter(_k, v) {
+        //   if (v === null)
+        //     return 'null'
+        //   return v
+        // }
+      })
   })
   //
   ins.interceptors.request.use(
@@ -86,7 +79,10 @@ function getIns() {
           confirmButtonText: '去登陆',
           type: 'warning',
           showClose: false
-        }).then(() => { router.push({ name: 'login' }) })
+        }).then(() => {
+          router.push({ name: 'login' })
+          closeWs()
+        })
         return Promise.reject(err)
       }
       ElMessage.error('请求失败')

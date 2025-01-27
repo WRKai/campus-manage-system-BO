@@ -1,12 +1,12 @@
 import { mock } from "mockjs"
 
-mock(/^\/api-admin\/courses\/all/, 'get', {
+mock(/^\/api-admin\/course\/list/, 'get', {
   "errorMessage": "",
   "code": 200,
   data: [
-    { id: 1, name: '计算机网络', credit: 3 },
-    { id: 2, name: '计算机网络实验', credit: 0.5 },
-    { id: 3, name: '体育', credit: 1 },
+    { id: 1, name: '计算机网络', credit: 60 },
+    { id: 2, name: '计算机牛魔', credit: 60 },
+    { id: 3, name: '一门不存在的课程', credit: 60 },
   ]
 })
 

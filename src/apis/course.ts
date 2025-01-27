@@ -12,7 +12,7 @@ export interface Course {
 }
 
 export const getCourses = (params: GetCoursesParams = {}): Promise<Course[]> =>
-  req({ url: '/courses/all', params })
+  req({ url: '/course/list', params })
 
 
 interface CourseApply {

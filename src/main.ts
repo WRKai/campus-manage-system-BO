@@ -13,7 +13,6 @@ window.ResizeObserver = class extends _ResizeObserver {
 import './assets/base.css'
 
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
@@ -22,18 +21,19 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
 // svgs
 import 'virtual:svg-icons-register'
+import pinia from './stores';
 
 // mock数据
-import '@/mock/'
-import '@/ws/mock'
+// import '@/mock/'
+// import '@/ws/mock'
 
 if (import.meta.env.PROD) {
-  console.log = console.error = console.warn = () => { }
+  // console.log = console.error = console.warn = () => { }
 }
 
 const app = createApp(App)
 
-app.use(createPinia())
+app.use(pinia)
   .use(ElementPlus, { locale: zhCn })
   .use(router)
 
