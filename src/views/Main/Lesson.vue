@@ -342,20 +342,20 @@
   async function getAvailTimeSegs(v: any) {
     v = v as number
     const res = await getTimes({ uid: curApplyUid.value, status: v })
-    for (const e of res.ban) {
-      const start = startTimesMap[e.beginTime]
-      const end = endTimesMap[e.endTime]
-      const { dayOfWeek } = e
-      for (let i = start; i <= end; i++) {
-        mat.value[i][dayOfWeek] = 2
-      }
-    }
     for (const e of res.notRequired) {
       const start = startTimesMap[e.beginTime]
       const end = endTimesMap[e.endTime]
       const { dayOfWeek } = e
       for (let i = start; i <= end; i++) {
         mat.value[i][dayOfWeek] = 3
+      }
+    }
+    for (const e of res.ban) {
+      const start = startTimesMap[e.beginTime]
+      const end = endTimesMap[e.endTime]
+      const { dayOfWeek } = e
+      for (let i = start; i <= end; i++) {
+        mat.value[i][dayOfWeek] = 2
       }
     }
     for (const e of timeSegs.value) {
