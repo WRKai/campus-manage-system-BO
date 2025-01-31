@@ -1,9 +1,7 @@
 const _ResizeObserver = window.ResizeObserver
 window.ResizeObserver = class extends _ResizeObserver {
-  // @ts-ignore
-  constructor(cb) {
+  constructor(cb: Function) {
     super(entries => {
-      // 使用requestAnimationFrame来延迟执行回调函数
       requestAnimationFrame(() => {
         cb(entries);
       });
@@ -18,7 +16,11 @@ import App from './App.vue'
 import router from './router'
 import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
-import 'element-plus/dist/index.css'
+if (import.meta.env.DEV) {
+  import('element-plus/dist/index.css')
+} else {
+  // console.log = console.error = console.warn = () => { }
+}
 // svgs
 import 'virtual:svg-icons-register'
 import pinia from './stores';
@@ -27,9 +29,6 @@ import pinia from './stores';
 // import '@/mock/'
 // import '@/ws/mock'
 
-if (import.meta.env.PROD) {
-  // console.log = console.error = console.warn = () => { }
-}
 
 const app = createApp(App)
 

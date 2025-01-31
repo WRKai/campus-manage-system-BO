@@ -2,6 +2,7 @@
   import { getCourseApply, putHandleCourseApply } from '@/apis/course';
   import { useCourseStore, type CourseMap } from '@/stores/courseStore';
   import { useDeptMajorStore } from '@/stores/deptMajorStore';
+  import { createWs } from '@/ws';
   import { Refresh } from '@element-plus/icons-vue';
   import { ElButton, ElLink, ElMessage, ElTable, ElTableColumn } from 'element-plus';
   import { ref, watch } from 'vue';
@@ -15,7 +16,8 @@
   async function init() {
     majorMap = await deptMajorStore.getMajors()
     courseMap = await courseStore.getCourseMap()
-    getApplies()
+    await getApplies()
+    createWs()
   }
   init()
   // 获取申请
@@ -38,7 +40,6 @@
   }
 
   async function handleApply(uid: string, apply: number) {
-    console.log(uid, apply)
     await putHandleCourseApply({ uid, apply })
     ElMessage.success('操作成功!')
     refreshApplies()

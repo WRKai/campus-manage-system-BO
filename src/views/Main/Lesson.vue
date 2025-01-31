@@ -10,6 +10,7 @@
   import { DAY_OF_WEEK_MAP } from '@/utils';
   import WeekRangeSelect from '@/components/WeekRangeSelect.vue';
   import TermSelect from '@/components/TermSelect.vue';
+  import { createWs } from '@/ws';
   const teacherCache = useTeacherCacheStore()
   const courseStore = useCourseStore()
   const route = useRoute()
@@ -18,7 +19,8 @@
 
   async function init() {
     courseMap = await courseStore.getCourseMap()
-    getApplies()
+    await getApplies()
+    createWs()
   }
   init()
 

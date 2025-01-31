@@ -1,6 +1,6 @@
 import { req } from "./req";
 
-interface GetCoursesParams {
+export interface GetCoursesParams {
   name?: string
   credit?: number
 }

@@ -6,11 +6,13 @@
   import { ElButton, ElCascader, ElDrawer, ElForm, ElFormItem, ElInput, ElMessage, ElPagination, ElRadio, ElSelect, ElRadioGroup, ElTable, ElTableColumn, type FormInstance, type FormRules, ElOption, ElTooltip, ElIcon } from 'element-plus';
   import { ref, watch } from 'vue';
   import SvgIcon from '@/components/SvgIcon.vue';
+  import { createWs } from '@/ws';
   const deptMajorStore = useDeptMajorStore()
   // 添加学生
   const deptMajorList = ref<Dept[]>([])
   async function initDeptMajor() {
     deptMajorList.value = await deptMajorStore.getList()
+    createWs()
   }
   initDeptMajor()
   interface AddStu {

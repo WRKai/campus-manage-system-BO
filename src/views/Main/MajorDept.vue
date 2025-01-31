@@ -3,11 +3,13 @@
   import { Plus, Refresh } from '@element-plus/icons-vue';
   import { ref } from 'vue';
   import { useDeptMajorStore, type Dept } from '@/stores/deptMajorStore';
+  import { createWs } from '@/ws';
   const deptMajorStore = useDeptMajorStore();
   const data = ref<Dept[]>([]);
   const deptAddInp = ref<InputInstance>()
   async function init() {
     data.value = await deptMajorStore.getList()
+    createWs()
   }
   init()
   // 添加系别

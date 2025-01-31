@@ -7,12 +7,14 @@
   import { ElButton, ElDrawer, ElForm, ElFormItem, ElInput, ElMessage, ElPagination, ElRadio, ElSelect, ElRadioGroup, ElTable, ElTableColumn, type FormInstance, type FormRules, ElOption, ElTooltip, ElSwitch, ElDatePicker, ElIcon } from 'element-plus';
   import { ref, watch } from 'vue';
   import SvgIcon from '@/components/SvgIcon.vue';
+  import { createWs } from '@/ws';
   const deptMajorStore = useDeptMajorStore()
   const userStore = useUserStore()
   // 添加学生
   const deptMajorList = ref<Dept[]>([])
   async function initDeptMajor() {
     deptMajorList.value = await deptMajorStore.getList()
+    createWs()
   }
   initDeptMajor()
   interface AddTeacher {

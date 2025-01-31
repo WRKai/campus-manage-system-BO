@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../views/Login.vue'
-import Main from '../views/Main/Main.vue'
 import { useUserStore } from '@/stores/userStore'
 
 export const PATH_LOGIN = '/login'
@@ -9,6 +7,7 @@ export const PATH_MAIN_MAJORDEPT = '/main/majorDept'
 export const PATH_MAIN_STUDENT = '/main/student'
 export const PATH_MAIN_TEACHER = '/main/teacher'
 export const PATH_MAIN_COURSE = '/main/course'
+export const PATH_MAIN_COURSE_MANAGE = '/main/courseManage'
 export const PATH_MAIN_LESSON = '/main/lesson'
 
 const router = createRouter({
@@ -22,7 +21,7 @@ const router = createRouter({
     {
       path: PATH_LOGIN,
       name: 'login',
-      component: Login,
+      component: () => import('@/views/Login.vue'),
       meta: {
         noAuth: true
       }
@@ -30,44 +29,41 @@ const router = createRouter({
     {
       path: PATH_MAIN,
       name: 'main',
-      component: Main,
+      component: () => import('@/views/Main/Main.vue'),
       redirect: PATH_MAIN_MAJORDEPT,
       children: [
         {
           path: PATH_MAIN_MAJORDEPT,
           name: 'main-majorDept',
-          component: () => import('../views/Main/MajorDept.vue')
+          component: () => import('@/views/Main/MajorDept.vue')
         },
         {
           path: PATH_MAIN_STUDENT,
           name: 'main-student',
-          component: () => import('../views/Main/Student.vue')
+          component: () => import('@/views/Main/Student.vue')
         },
         {
           path: PATH_MAIN_TEACHER,
           name: 'main-teacher',
-          component: () => import('../views/Main/Teacher.vue')
+          component: () => import('@/views/Main/Teacher.vue')
         },
         {
           path: PATH_MAIN_COURSE,
           name: 'main-course',
-          component: () => import('../views/Main/Course.vue')
+          component: () => import('@/views/Main/Course.vue')
+        },
+        {
+          path: PATH_MAIN_COURSE_MANAGE,
+          name: 'main-courseManage',
+          component: () => import('@/views/Main/CourseManage.vue')
         },
         {
           path: PATH_MAIN_LESSON,
           name: 'main-lesson',
-          component: () => import('../views/Main/Lesson.vue')
+          component: () => import('@/views/Main/Lesson.vue')
         },
       ]
     }
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue'),
-    // },
   ],
 })
 router.beforeEach((to, _from, next) => {
