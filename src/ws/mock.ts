@@ -1,7 +1,8 @@
 import { Server } from 'mock-socket'
 import { WS_BASE_URL } from './consts';
+import pinia from '@/stores';
 import { useUserStore } from '@/stores/userStore';
-const mockSever = new Server(WS_BASE_URL + useUserStore().getToken())
+const mockSever = new Server(WS_BASE_URL + useUserStore(pinia).getToken())
 mockSever.on('connection', socket => {
   console.log('mockSever connected!');
   let codeNum = false

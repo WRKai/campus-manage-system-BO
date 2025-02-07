@@ -8,27 +8,26 @@ window.ResizeObserver = class extends _ResizeObserver {
     });
   }
 }
-import './assets/base.css'
+// #v-ifdef DEV
+import 'element-plus/dist/index.css'
+// #v-endif
 
 import { createApp } from 'vue'
-
 import App from './App.vue'
 import router from './router'
 import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
-if (import.meta.env.DEV) {
-  import('element-plus/dist/index.css')
-} else {
-  // console.log = console.error = console.warn = () => { }
-}
+import pinia from './stores';
 // svgs
 import 'virtual:svg-icons-register'
-import pinia from './stores';
-
 // mock数据
-// import '@/mock/'
-// import '@/ws/mock'
-
+import '@/mock/'
+import '@/ws/mock'
+// 样式
+import './assets/base.css'
+if (0) {
+  console.log = console.error = console.warn = () => { }
+}
 
 const app = createApp(App)
 

@@ -7,6 +7,7 @@ import path from 'node:path'
 import viteCompress from 'vite-plugin-compression'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { visualizer } from "rollup-plugin-visualizer";
+import ConditionalCompile from "vite-plugin-conditional-compiler";
 import { cdnRefreshInject } from './cdnRefreshInject'
 const prod = process.env.NODE_ENV === 'production'
 // https://vite.dev/config/
@@ -15,6 +16,7 @@ export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
+    ConditionalCompile(),
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
       symbolId: 'icon-[name]'
@@ -56,24 +58,24 @@ export default defineConfig({
     viteCompress({
       algorithm: 'gzip',
       ext: '.gz',
-      filter: /\.(js|css|html|ico|json)$/,
+      filter: /\.(js|css|html|ico|json|jpg|png)$/,
       threshold: 1,
       deleteOriginFile: false,
     }),
     viteCompress({
       algorithm: 'brotliCompress',
       ext: '.br',
-      filter: /\.(js|css|html|ico|json)$/,
+      filter: /\.(js|css|html|ico|json|jpg|png)$/,
       threshold: 1,
       deleteOriginFile: false,
     }),
-    // visualizer({
-    //   gzipSize: true,
-    //   brotliSize: true,
-    //   emitFile: false,
-    //   filename: "test.html", //分析图生成的文件名
-    //   open: true //如果存在本地服务端口，将在打包后自动展示
-    // })
+    visualizer({
+      gzipSize: true,
+      brotliSize: true,
+      emitFile: false,
+      filename: "test.html", //分析图生成的文件名
+      open: true //如果存在本地服务端口，将在打包后自动展示
+    })
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -95,7 +97,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['vue-router', 'pinia', 'vue', 'axios', 'element-plus', 'jsencrypt', 'qs', 'reconnecting-websocket', '@element-plus/icons-vue', 'element-plus/dist/index.css', 'element-plus/es/locale/lang/zh-cn']
+      external: ['vue-router', 'pinia', 'vue', 'axios', 'element-plus', 'jsencrypt', 'qs', 'reconnecting-websocket', '@element-plus/icons-vue', 'element-plus/es/locale/lang/zh-cn']
     }
   }
 })

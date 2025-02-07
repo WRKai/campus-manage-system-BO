@@ -24,11 +24,12 @@ interface TeacherQueryParams {
 export const pageTeachers = async (params: TeacherQueryParams): PagePromise<Teacher> => {
   const res = await req({ url: '/teacher/page', method: 'GET', params }) as { records: Teacher[], total: number }
   const cache = useTeacherCacheStore()
-  res.records.forEach(t => {
-    if (!cache.has(t.id))
-      cache.set(t.id, t.name)
-  })
+  Promise.all(
+    res.records.map(async t => {
+      if (!(await cache.has(t.id)))
+        await cache.set(t.id, t.name)
+    })
+  )
   return res
-
 }
 

@@ -108,7 +108,7 @@
           <ElIcon :size="28">
             <SvgIcon name="course" />
           </ElIcon>
-          <span :class="{ dot: lessonAddDot }">课程管理</span>
+          <span :class="{ dot: courseAddDot }">课程管理</span>
         </template>
         <ElMenuItem index="/main/course">
           <ElIcon :size="20">
@@ -136,13 +136,19 @@
           </ElIcon>
           <span :class="{ dot: lessonAddDot }">课次申请</span>
         </ElMenuItem>
-        <ElMenuItem index="/main/lesson">
+        <!-- <ElMenuItem index="/main/lesson">
           <ElIcon :size="22">
             <SvgIcon name="lessonManage" />
           </ElIcon>
-          <span :class="{ dot: lessonAddDot }">全校课次</span>
-        </ElMenuItem>
+          <span>全校课次</span>
+        </ElMenuItem> -->
       </ElSubMenu>
+      <ElMenuItem index="/main/lessonSelect">
+        <ElIcon :size="24">
+          <SvgIcon name="lessonSelect" />
+        </ElIcon>
+        <span>选课管理</span>
+      </ElMenuItem>
     </ElMenu>
     <RouterView />
   </div>

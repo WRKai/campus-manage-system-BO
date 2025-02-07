@@ -17,6 +17,9 @@ importers:
       element-plus:
         specifier: ^2.9.3
         version: 2.9.3(vue@3.5.13(typescript@5.6.3))
+      idb-keyval:
+        specifier: ^6.2.1
+        version: 6.2.1
       jsencrypt:
         specifier: ^3.3.2
         version: 3.3.2
@@ -99,6 +102,9 @@ importers:
       vite-plugin-compression:
         specifier: ^0.5.1
         version: 0.5.1(vite@6.0.7(@types/node@22.10.5)(less@4.2.1)(terser@5.37.0))
+      vite-plugin-conditional-compiler:
+        specifier: ^0.3.1
+        version: 0.3.1(esbuild@0.24.2)(rollup@4.30.1)(vite@6.0.7(@types/node@22.10.5)(less@4.2.1)(terser@5.37.0))
       vite-plugin-html:
         specifier: ^3.2.2
         version: 3.2.2(vite@6.0.7(@types/node@22.10.5)(less@4.2.1)(terser@5.37.0))
@@ -1710,6 +1716,9 @@ packages:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
 
+  idb-keyval@6.2.1:
+    resolution: {integrity: sha512-8Sb3veuYCyrZL+VBt9LJfZjLUPWVvqn8tG28VqYNFCo43KHcKuq+b4EiXGeuaLAQWL2YmyDgMp2aSpH9JHsEQg==}
+
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
@@ -2825,6 +2834,36 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
+  unplugin-preprocessor-directives@1.0.3:
+    resolution: {integrity: sha512-l/ZZ7CpVSqzkG3v2zBl2DEur4sC+qUdHpc9TrKahXP+JbPCQYHKUgdCgFpbrM5hLLQqxoa9gVleIZJL/2Lk4Bg==}
+    peerDependencies:
+      '@nuxt/kit': ^3
+      '@nuxt/schema': ^3
+      '@rspack/core': '*'
+      esbuild: '*'
+      rollup: ^3
+      vite: '>=3'
+      webpack: ^4 || ^5
+    peerDependenciesMeta:
+      '@nuxt/kit':
+        optional: true
+      '@nuxt/schema':
+        optional: true
+      '@rspack/core':
+        optional: true
+      esbuild:
+        optional: true
+      rollup:
+        optional: true
+      vite:
+        optional: true
+      webpack:
+        optional: true
+
+  unplugin@1.16.1:
+    resolution: {integrity: sha512-4/u/j4FrCKdi17jaxuJA0jClGxB1AvU2hw/IuayPc4ay1XGaJs/rbb4v5WKwAjNifjmXK9PIFyuPiaK8azyR9w==}
+    engines: {node: '>=14.0.0'}
+
   unset-value@1.0.0:
     resolution: {integrity: sha512-PcA2tsuGSF9cnySLHTLSh2qrQiJ70mn+r+Glzxv2TWZblxsxCC52BDlZoPCsz7STd9pN7EZetkWZBAvk4cgZdQ==}
     engines: {node: '>=0.10.0'}
@@ -2862,6 +2901,9 @@ packages:
     resolution: {integrity: sha512-5QJKBDc+gNYVqL/skgFAP81Yuzo9R+EAf19d+EtsMF/i8kFUpNi3J/H01QD3Oo8zBQn+NzoCIFkpPLynoOzaJg==}
     peerDependencies:
       vite: '>=2.0.0'
+
+  vite-plugin-conditional-compiler@0.3.1:
+    resolution: {integrity: sha512-nsvK6U99PuiLpINEfgoX48Gxz4csnzrBELVl8L/swMd7OmQUxdyg2/x0rxH6Mzj+6EaCg0SAyz7W0OA0B6iaVA==}
 
   vite-plugin-html@3.2.2:
     resolution: {integrity: sha512-vb9C9kcdzcIo/Oc3CLZVS03dL5pDlOFuhGlZYDCJ840BhWl/0nGeZWf3Qy7NlOayscY4Cm/QRgULCQkEZige5Q==}
@@ -2972,6 +3014,9 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  webpack-virtual-modules@0.6.2:
+    resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
 
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
@@ -4821,6 +4866,8 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
+  idb-keyval@6.2.1: {}
+
   ignore@5.3.2: {}
 
   image-size@0.5.5: {}
@@ -6003,6 +6050,21 @@ snapshots:
 
   universalify@2.0.1: {}
 
+  unplugin-preprocessor-directives@1.0.3(esbuild@0.24.2)(rollup@4.30.1)(vite@6.0.7(@types/node@22.10.5)(less@4.2.1)(terser@5.37.0)):
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      magic-string: 0.30.17
+      unplugin: 1.16.1
+    optionalDependencies:
+      esbuild: 0.24.2
+      rollup: 4.30.1
+      vite: 6.0.7(@types/node@22.10.5)(less@4.2.1)(terser@5.37.0)
+
+  unplugin@1.16.1:
+    dependencies:
+      acorn: 8.14.0
+      webpack-virtual-modules: 0.6.2
+
   unset-value@1.0.0:
     dependencies:
       has-value: 0.3.1
@@ -6038,6 +6100,19 @@ snapshots:
       vite: 6.0.7(@types/node@22.10.5)(less@4.2.1)(terser@5.37.0)
     transitivePeerDependencies:
       - supports-color
+
+  vite-plugin-conditional-compiler@0.3.1(esbuild@0.24.2)(rollup@4.30.1)(vite@6.0.7(@types/node@22.10.5)(less@4.2.1)(terser@5.37.0)):
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      unplugin-preprocessor-directives: 1.0.3(esbuild@0.24.2)(rollup@4.30.1)(vite@6.0.7(@types/node@22.10.5)(less@4.2.1)(terser@5.37.0))
+    transitivePeerDependencies:
+      - '@nuxt/kit'
+      - '@nuxt/schema'
+      - '@rspack/core'
+      - esbuild
+      - rollup
+      - vite
+      - webpack
 
   vite-plugin-html@3.2.2(vite@6.0.7(@types/node@22.10.5)(less@4.2.1)(terser@5.37.0)):
     dependencies:
@@ -6166,6 +6241,8 @@ snapshots:
       '@vue/shared': 3.5.13
     optionalDependencies:
       typescript: 5.6.3
+
+  webpack-virtual-modules@0.6.2: {}
 
   whatwg-encoding@3.1.1:
     dependencies:

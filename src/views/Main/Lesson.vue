@@ -38,7 +38,7 @@
     data.value = await Promise.all(res.map(async e => ({
       ...e,
       courseName: courseMap?.get(e.courseId)?.name!,
-      teacherName: teacherCache.get(e.teacherId)! ?? await pageTeachers({ id: e.teacherId }).then(res => res.records[0].name)
+      teacherName: await teacherCache.get(e.teacherId)
     })))
   }
 
@@ -431,7 +431,6 @@
       term: dialogFormVal.value.term,
       time: timeSegs.value as Required<TimeSeg>[]
     }
-    console.log(obj)
     await postHandleLessonApply(obj)
     ElMessage.success('处理成功!')
     clearAll()
@@ -544,10 +543,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="i in 11" :key="i">
+            <tr v-for="i in 11">
               <td>{{ i }}</td>
               <td class="selector" :class="{ [classMap[Math.abs(mat[i][j])]]: true, 'not-allowed': mat[i][j] < 0 }"
-                v-for="j in 7" :key="Number.MAX_SAFE_INTEGER - j" :data-row="i" :data-col="j"></td>
+                v-for="j in 7" :data-row="i" :data-col="j"></td>
             </tr>
           </tbody>
         </table>

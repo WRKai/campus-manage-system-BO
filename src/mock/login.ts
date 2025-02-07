@@ -11,7 +11,8 @@ mock('/api-admin/admin/adminLogin', 'post', {
       "dept": 1,
       "admin": 1,
       "entry_date": '2022-09-01',
-      "title": '副教授'
+      "title": '副教授',
+      name: '王梅尔'
     }
   }
 })

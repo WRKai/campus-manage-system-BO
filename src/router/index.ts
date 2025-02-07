@@ -9,6 +9,7 @@ export const PATH_MAIN_TEACHER = '/main/teacher'
 export const PATH_MAIN_COURSE = '/main/course'
 export const PATH_MAIN_COURSE_MANAGE = '/main/courseManage'
 export const PATH_MAIN_LESSON = '/main/lesson'
+export const PATH_MAIN_LESSON_SELECT = '/main/lessonSelect'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,6 +62,11 @@ const router = createRouter({
           path: PATH_MAIN_LESSON,
           name: 'main-lesson',
           component: () => import('@/views/Main/Lesson.vue')
+        },
+        {
+          path: PATH_MAIN_LESSON_SELECT,
+          name: 'main-lessonSelect',
+          component: () => import('@/views/Main/LessonSelect.vue')
         },
       ]
     }

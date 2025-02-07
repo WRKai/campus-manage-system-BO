@@ -35,6 +35,7 @@ type ElMessageBoxOptions = {
   confirmButtonText?: string,
   cancelButtonText?: string
 }
+
 export async function showConfirm(message: string, type?: ElMessageBoxType, title?: string): Promise<any>
 export async function showConfirm(message: string, config?: ElMessageBoxOptions, title?: string): Promise<any>
 export async function showConfirm(message: string, typeOrConfig?: ElMessageBoxOptions | ElMessageBoxType, title: string = '提示') {
@@ -47,5 +48,8 @@ export async function showConfirm(message: string, typeOrConfig?: ElMessageBoxOp
   return ElMessageBox.confirm(message, title, config)
 }
 
+export function transformDateTime(date: Date) {
+  return date.toLocaleString().replaceAll('/', '-')
+}
 
 export const DAY_OF_WEEK_MAP = ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日']

@@ -21,13 +21,9 @@ function getIns() {
       qs.stringify(params, {
         arrayFormat: 'repeat',
         skipNulls: true,
-        // filter(_k, v) {
-        //   if (v === null)
-        //     return 'null'
-        //   return v
-        // }
       })
   })
+
   //
   ins.interceptors.request.use(
     config => {
