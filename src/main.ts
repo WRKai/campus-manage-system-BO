@@ -21,8 +21,8 @@ import pinia from './stores';
 // svgs
 import 'virtual:svg-icons-register'
 // mock数据
-import '@/mock/'
-import '@/ws/mock'
+// import '@/mock/'
+// import '@/ws/mock'
 // 样式
 import './assets/base.css'
 if (0) {

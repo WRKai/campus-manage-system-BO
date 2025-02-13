@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { getLessonApply, getTimes, postHandleLessonApply } from '@/apis/lesson';
-  import { pageTeachers } from '@/apis/teacher';
   import { useCourseStore, type CourseMap } from '@/stores/courseStore';
   import { useTeacherCacheStore } from '@/stores/teacherCacheStore';
   import { computed, ref, watch } from 'vue';
@@ -79,7 +78,8 @@
         })
       }
       merged = false
-      out: for (let i = 0; i < timeSegs.value.length; i++) {
+      out:
+      for (let i = 0; i < timeSegs.value.length; i++) {
         for (let j = i + 1; j < timeSegs.value.length; j++) {
           const s1 = timeSegs.value[i], s2 = timeSegs.value[j]
           if (s1.dayOfWeek !== s2.dayOfWeek)

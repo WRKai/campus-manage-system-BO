@@ -12,7 +12,7 @@
   function handleUpdateEnd(v: string) {
     end.value = (v = v.replaceAll(/[^\d]/g, ''))
     if (v && start.value)
-      modelValue.value = [+v, +end.value]
+      modelValue.value = [+start.value, +v]
   }
 </script>
 
