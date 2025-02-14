@@ -63,7 +63,9 @@ export function cdnRefreshInject(data: ModuleNameMapVarNameCdn, options: { preFe
         moduleSrc = moduleScript.attr('src')!
         moduleScript.remove()
       }
-      const myStyle = $('link[rel="stylesheet"]')
+      const myStyle = $('link[rel="stylesheet"]').filter(function () {
+        return !/https:/.test($(this).attr('href')!);
+      });
       const handler1 = (defer: boolean = true) =>
         (e: SingleModuleNameMapVarNameCdn) => {
           $(`<script onload="ls()" data-name="${e.globVar}"${defer ? ' defer ' : ''}src="${e.cdns[0]}"></script>`).insertBefore(myStyle)
