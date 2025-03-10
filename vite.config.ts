@@ -69,13 +69,13 @@ export default defineConfig({
       threshold: 1,
       deleteOriginFile: false,
     }),
-    visualizer({
-      gzipSize: true,
-      brotliSize: true,
-      emitFile: false,
-      filename: "test.html", //分析图生成的文件名
-      open: true //如果存在本地服务端口，将在打包后自动展示
-    })
+    // visualizer({
+    //   gzipSize: true,
+    //   brotliSize: true,
+    //   emitFile: false,
+    //   filename: "test.html", //分析图生成的文件名
+    //   open: true //如果存在本地服务端口，将在打包后自动展示
+    // })
   ].filter(Boolean),
   resolve: {
     alias: {
