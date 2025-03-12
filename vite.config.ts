@@ -87,7 +87,7 @@ export default defineConfig({
     port: 15432,
     proxy: {
       '/api-admin': {
-        target: 'http://1.95.36.194:6002',
+        target: 'http://1.95.219.220:6002',
         changeOrigin: true,
         rewrite(path) {
           return path.replace('\/api-admin', '')

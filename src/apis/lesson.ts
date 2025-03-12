@@ -23,7 +23,7 @@ export interface Schedule {
   }[];
 }
 
-export const getTimes = (params: { uid: string, status: number }): Promise<Schedule> =>
+export const getTimes = (params: { uid: string, status: number, term: string }): Promise<Schedule> =>
   req({ url: '/lessonTime', params })
 
 interface HandleLessonApplyReq {

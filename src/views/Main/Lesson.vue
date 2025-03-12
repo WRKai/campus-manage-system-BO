@@ -5,8 +5,8 @@
   import { computed, ref, watch } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, ElLink, ElMessage, ElRadioButton, ElRadioGroup, ElTable, ElTableColumn, ElTag, ElTooltip, type FormInstance, type FormRules } from 'element-plus';
-  import { Delete, Plus, Refresh } from '@element-plus/icons-vue';
-  import { DAY_OF_WEEK_MAP } from '@/utils';
+  import { Check, Delete, Plus, Refresh } from '@element-plus/icons-vue';
+  import { compRef, DAY_OF_WEEK_MAP, showConfirm } from '@/utils';
   import WeekRangeSelect from '@/components/WeekRangeSelect.vue';
   import TermSelect from '@/components/TermSelect.vue';
   import { createWs } from '@/ws';
@@ -54,10 +54,8 @@
     beginTime: string
     endTime: string
     dayOfWeek?: number
-    uuid: number
     status?: number
   }
-  let uuid = Number.MAX_SAFE_INTEGER
   const timeSegs = ref<TimeSeg[]>([])
   function addTimeSeg() {
     const copy = timeSegs.value.map(e => ({ ...e }))
@@ -98,7 +96,6 @@
               timeSegs.value.unshift({
                 beginTime: reverseStartTimesMap[nBegin],
                 endTime: reverseEndTimesMap[nEnd],
-                uuid: --uuid,
                 dayOfWeek,
                 status: s1.status
               })
@@ -112,7 +109,6 @@
               timeSegs.value.unshift({
                 beginTime: reverseStartTimesMap[begin1],
                 endTime: reverseEndTimesMap[end1],
-                uuid: --uuid,
                 dayOfWeek,
                 status: 0
               })
@@ -128,14 +124,12 @@
               timeSegs.value.unshift({
                 beginTime: reverseStartTimesMap[begin1],
                 endTime: reverseEndTimesMap[minEnd],
-                uuid: --uuid,
                 dayOfWeek,
                 status: 0
               })
               timeSegs.value.unshift({
                 beginTime: reverseStartTimesMap[minEnd + 1],
                 endTime: reverseEndTimesMap[maxEnd],
-                uuid: --uuid,
                 dayOfWeek,
                 status: end1 > end2 ? s1.status : s2.status
               })
@@ -151,14 +145,12 @@
               timeSegs.value.unshift({
                 beginTime: reverseStartTimesMap[maxBegin],
                 endTime: reverseEndTimesMap[end1],
-                uuid: --uuid,
                 dayOfWeek,
                 status: 0
               })
               timeSegs.value.unshift({
                 beginTime: reverseStartTimesMap[minBegin],
                 endTime: reverseEndTimesMap[maxBegin - 1],
-                uuid: --uuid,
                 dayOfWeek,
                 status: begin1 < begin2 ? s1.status : s2.status
               })
@@ -180,16 +172,16 @@
       beginTime: '',
       endTime: '',
       dayOfWeek: void 0,
-      uuid: 0,
       status: void 0
     }
   }
+  const termBind = ref('')
+  const curTerm = ref('')
   const adder = ref<TimeSeg>({
     beginTime: '',
     endTime: '',
     dayOfWeek: void 0,
-    uuid: 0,
-    status: void 0
+    status: void 0,
   })
   const adderFull = computed(() => !!adder.value.beginTime && !!adder.value.endTime && adder.value.dayOfWeek !== void 0)
   /// 时间段选择器
@@ -290,7 +282,7 @@
       firstChoose = getPos(target)
       mat.value[firstChoose[0]][firstChoose[1]] = 5
       ElMessage({
-        message: '已选择起始时间，再选一个以完成时间段选择（或右键重选起点）',
+        message: '已选择起始时间，再选一个以完成时间段选择（右键取消）',
         grouping: true,
         type: 'success'
       })
@@ -323,7 +315,6 @@
       adder.value.beginTime = reverseStartTimesMap[s]
       adder.value.endTime = reverseEndTimesMap[x]
       adder.value.dayOfWeek = y
-      adder.value.uuid = --uuid
     }
   }
   let origin: number[][] = []
@@ -341,9 +332,9 @@
     [1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1]
   ])
-  async function getAvailTimeSegs(v: any) {
-    v = v as number
-    const res = await getTimes({ uid: curApplyUid.value, status: v })
+  async function getAvailTimeSegs() {
+    const v = adder.value.status as number
+    const res = await getTimes({ uid: curApplyUid.value, status: v, term: curTerm.value })
     for (const e of res.notRequired) {
       const start = startTimesMap[e.beginTime]
       const end = endTimesMap[e.endTime]
@@ -376,12 +367,10 @@
   const dialogFormRef = ref<FormInstance>()
   interface DialogForm {
     weekRange: [number, number]
-    term: string
     capacity: string
   }
   const dialogFormVal = ref<DialogForm>({
     weekRange: [0, 0],
-    term: '',
     capacity: ''
   })
   const dialogFormRules: FormRules<DialogForm> = {
@@ -398,7 +387,6 @@
         }
       }
     ],
-    term: [{ required: true, message: '请选择学期', trigger: ['blur', 'change'] }],
     capacity: [
       { required: true, message: '请输入课容量', trigger: ['blur', 'change'] },
       {
@@ -428,7 +416,7 @@
       startWeek: dialogFormVal.value.weekRange[0],
       endWeek: dialogFormVal.value.weekRange[1],
       capacity: +dialogFormVal.value.capacity,
-      term: dialogFormVal.value.term,
+      term: curTerm.value,
       time: timeSegs.value as Required<TimeSeg>[]
     }
     await postHandleLessonApply(obj)
@@ -437,13 +425,30 @@
     vis.value = false
     refreshApplies()
   }
+  function confirmTerm() {
+    if (!termBind.value) {
+      ElMessage({
+        message: '请输入学期',
+        type: 'error',
+        grouping: true
+      })
+      return
+    }
+    curTerm.value = termBind.value
+  }
+  const termSelectRef = compRef(TermSelect)
+  async function retakeTerm() {
+    await showConfirm('确定重选学期吗?这会清除已选择的数据!')
+    clearAll()
+  }
   // 清除所有数据
   function clearAll(clearPart: boolean = false) {
     if (!clearPart) {
       dialogFormRef.value?.resetFields()
-      dialogFormVal.value.term = ''
       dialogFormVal.value.weekRange = [0, 0]
       timeSegs.value = []
+      curTerm.value = termBind.value = ''
+      termSelectRef.value?.clear()
     }
     mat.value.forEach(e => e.fill(1))
     firstChoose = null
@@ -472,18 +477,21 @@
       </ElTableColumn>
     </ElTable>
   </div>
-  <ElDialog @close="clearAll" :z-index="9998" fullscreen v-model="vis">
+  <ElDialog @close="clearAll" :z-index="999" fullscreen v-model="vis">
     <div class="dialog">
       <div class="left">
+        <div class="term-select">
+          <TermSelect ref="termSelectRef" :prefix="20" v-model="termBind" />
+          <ElButton v-if="!curTerm" @click="confirmTerm" :icon="Check" type="success" plain>确定学期</ElButton>
+          <ElButton v-else @click="retakeTerm" :icon="Refresh" type="danger" plain>重选学期</ElButton>
+        </div>
         <div class="time-unit-add">
-          <ElTooltip popper-class="above-dialog-tooltip" content="选择一项,以在右侧选择时间段" placement="right">
-            <ElRadioGroup :disabled="adder.status !== void 0" @change="getAvailTimeSegs" size="large"
-              v-model="adder.status">
-              <ElRadioButton label="每周" :value="0" />
-              <ElRadioButton label="单周" :value="1" />
-              <ElRadioButton label="双周" :value="2" />
-            </ElRadioGroup>
-          </ElTooltip>
+          <ElRadioGroup @change="getAvailTimeSegs" :disabled="adder.status !== void 0 || !curTerm" size="large"
+            v-model="adder.status">
+            <ElRadioButton label="每周" :value="0" />
+            <ElRadioButton label="单周" :value="1" />
+            <ElRadioButton label="双周" :value="2" />
+          </ElRadioGroup>
           <div class="ops">
             <ElTooltip popper-class="above-dialog-tooltip" content="重新选择单双周">
               <ElButton :disabled="adder.status === void 0 || adderFull" @click="clearAll(true)" type="primary" circle
@@ -492,7 +500,7 @@
             <ElTooltip placement="top" popper-class="above-dialog-tooltip" content="舍弃待添加时间段">
               <ElButton :disabled="!adderFull" @click="clearAll(true)" type="danger" circle :icon="Delete" />
             </ElTooltip>
-            <ElTooltip placement="top" popper-class="above-dialog-tooltip" content="确认添加该时间段">
+            <ElTooltip placement="top" popper-class="above-dialog-tooltip" content="确认待添加时间段">
               <ElButton :disabled="!adderFull" @click="addTimeSeg" type="success" circle :icon="Plus" />
             </ElTooltip>
           </div>
@@ -503,7 +511,7 @@
           </div>
         </div>
         <ul class="time-unit-display">
-          <li v-for="t in timeSegs" :key="t.uuid">
+          <li v-for="t in timeSegs" :key="t.beginTime + t.endTime + t.dayOfWeek + t.status">
             <ElTag size="large" round>{{ statusMapping[t.status!] }}</ElTag>
             <ElTag size="large" effect="dark" round>{{ DAY_OF_WEEK_MAP[t.dayOfWeek!] }}</ElTag>
             <span>{{ t.beginTime }}</span>~<span>{{ t.endTime }}</span>
@@ -511,18 +519,16 @@
           <li v-if="!timeSegs.length" style="color: #aaa;text-align: center;width: 100%;">暂无时间段</li>
         </ul>
         <div class="week-selector">
-          <ElForm @submit.prevent="handleSubmit" ref="dialogFormRef" :model="dialogFormVal" :rules="dialogFormRules">
+          <ElForm @submit.prevent="handleSubmit" ref="dialogFormRef" :model="dialogFormVal" :rules="dialogFormRules"
+            label-width="auto">
             <ElFormItem prop="weekRange">
               <WeekRangeSelect v-model="dialogFormVal.weekRange" />
             </ElFormItem>
-            <ElFormItem prop="term">
-              <TermSelect :prefix="20" v-model="dialogFormVal.term" />
-            </ElFormItem>
             <ElFormItem label="课容量" prop="capacity">
-              <ElInput type="number" v-model="dialogFormVal.capacity" />
+              <ElInput size="small" type="number" v-model="dialogFormVal.capacity" />
             </ElFormItem>
             <ElFormItem label=" ">
-              <ElButton native-type="submit" type="primary" :icon="Plus">确认添加该课次</ElButton>
+              <ElButton native-type="submit" type="primary" :icon="Plus">确认添加课次</ElButton>
             </ElFormItem>
           </ElForm>
         </div>
@@ -620,6 +626,21 @@
         // }
       }
 
+      .term-select {
+        padding: 10px;
+        border: 1px solid #bbb;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        >* {
+          margin-bottom: 15px;
+        }
+      }
+
       .time-unit-add {
         padding: 10px;
         border: 1px solid #bbb;
@@ -630,10 +651,12 @@
         align-items: center;
         justify-content: center;
 
-        .ops {
-          margin-top: 10px;
-          padding: 10px;
+        >* {
+          margin-bottom: 15px;
+        }
 
+        .term-select {
+          display: flex;
         }
 
         .waiting {

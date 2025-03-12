@@ -19,9 +19,10 @@
 <template>
   <div class="week-range-select-container">
     <div class="text">第</div>
-    <ElInput min="1" :model-value="start" @update:model-value="handleUpdateStart" class="inp" type="number" />
+    <ElInput size="small" min="1" :model-value="start" @update:model-value="handleUpdateStart" class="inp"
+      type="number" />
     <div class="text">周-第</div>
-    <ElInput min="1" :model-value="end" @update:model-value="handleUpdateEnd" class="inp" type="number" />
+    <ElInput size="small" min="1" :model-value="end" @update:model-value="handleUpdateEnd" class="inp" type="number" />
     <div class="text">周</div>
   </div>
 </template>

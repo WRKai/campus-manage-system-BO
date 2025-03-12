@@ -65,6 +65,7 @@ body,
 
 .above-dialog-tooltip,
 .el-message,
-.el-loading-mask {
+.el-loading-mask,
+.el-message-box {
   z-index: 9999 !important;
 }
